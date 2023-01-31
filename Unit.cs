@@ -13,11 +13,11 @@ namespace Strategy_game_2
         public int health;
         public Team team; 
 
-        public Unit(string name, int damage, int hitpoints)
+        public Unit(string name, int damage, int health)
         {
             this.name = name;
             this.damage = damage;
-            this.health = hitpoints;
+            this.health = health;
             this.team = Team.Neutral;
         }
     }

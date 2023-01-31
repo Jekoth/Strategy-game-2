@@ -27,6 +27,7 @@ class Program
             {
                 break;
             }
+            Console.WriteLine("\n-------------------------------------");
             Unit attacker = SelectUnit("Select attacker:", humanArmy);
             Unit defender = SelectUnit("Select target:", skeletonArmy);
             Attack(attacker, defender);
@@ -89,10 +90,6 @@ class Program
             defender.health -= attacker.damage;
             defender.health = Math.Max(0, defender.health);
             Color.PrintAttack(attacker, defender);
-            if (defender.health <= 0)
-            {
-                Color.ColorWriteLine(defender.name + " died!", Color.noteColor);
-            }
         }
     }
 }

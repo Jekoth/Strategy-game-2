@@ -8,8 +8,27 @@ namespace Strategy_game_2
 {
     public class Color
     {
-        public static ConsoleColor errorColor = ConsoleColor.Red;
-        public static ConsoleColor noteColor = ConsoleColor.Yellow;
+        // Color constants
+        public const ConsoleColor defaultColor = ConsoleColor.Gray;
+        public const ConsoleColor noteColor = ConsoleColor.White;
+        public const ConsoleColor errorColor = ConsoleColor.Red;
+        public const ConsoleColor playerColor = ConsoleColor.Blue;
+        public const ConsoleColor enemyColor = ConsoleColor.Yellow;
+
+        public static ConsoleColor TeamToColor(Team team)
+        {
+            switch (team)
+            {
+                case Team.Player:
+                    return playerColor;
+                case Team.Enemy:
+                    return enemyColor;
+                case Team.Neutral:
+                    return defaultColor;
+                default:
+                    return defaultColor;
+            }
+        }
 
         public static void ColorWrite(string text, ConsoleColor color)
         {
@@ -24,23 +43,53 @@ namespace Strategy_game_2
             Console.ResetColor();
         }
 
+        public static void LineEnd()
+        {
+            Console.Write("\n");
+        }
+
         public static void DisplayArmy(string title, Army army)
         {
             ColorWriteLine(title, noteColor);
             Console.WriteLine("-------------------------------------");
-            for (int i = 0; i < army.Units.Count; i++)
+
+            int number = 1;
+            foreach (Unit unit in army.Units)
             {
-                Console.WriteLine((i + 1) + ". " + army.Units[i].name + " HP: " + army.Units[i].health);
+                PrintUnit(number, unit);
+                number++;
             }
-            Console.WriteLine();
+            LineEnd();
+        }
+
+        public static void PrintUnit(int number, Unit unit)
+        {
+            if (unit.health > 0)
+            {
+                ColorWrite(number + ": ", defaultColor);
+                ColorWrite(unit.name, TeamToColor(unit.team));
+                ColorWrite(" Dmg: " + unit.damage + " HP: " + unit.health, defaultColor);
+                LineEnd();
+            }
+            else
+            {
+                ColorWriteLine(number + ": [Defeated] " + unit.name, defaultColor);
+            }
         }
 
         public static void PrintAttack(Unit attacker, Unit defender)
         {
-            Console.WriteLine(attacker.name + " attacks " + defender.name + " for " + attacker.damage + " damage.");
-            Console.WriteLine(defender.name + " has " + defender.health + " HP left.");
-            Console.WriteLine();
-        }
+            ColorWrite(attacker.name, TeamToColor(attacker.team));
+            ColorWrite(" attacks ", defaultColor);
+            ColorWrite(defender.name, TeamToColor(defender.team));
+            ColorWrite(" Dealing " + attacker.damage + " damage!", noteColor);
+            LineEnd();
 
+            if (defender.health <= 0)
+            {
+                defender.health = 0;
+                ColorWriteLine(defender.name + " is defeated!", noteColor);
+            }
+        }
     }
 }
