@@ -16,7 +16,7 @@ class Program
 
         Random random = new Random();
 
-        Console.WriteLine("Battle begins!");
+        Color.ColorWriteLine("Battle begins!\n", Color.noteColor);
         Color.DisplayArmy(humanArmy.Name, humanArmy);
         Color.DisplayArmy(skeletonArmy.Name, skeletonArmy);
 
@@ -27,8 +27,8 @@ class Program
             {
                 break;
             }
-            var attacker = SelectUnit("Select attacker:", humanArmy);
-            var defender = SelectUnit("Select target:", skeletonArmy);
+            Unit attacker = SelectUnit("Select attacker:", humanArmy);
+            Unit defender = SelectUnit("Select target:", skeletonArmy);
             Attack(attacker, defender);
 
             // Enemy turn
@@ -52,16 +52,16 @@ class Program
             var choice = Console.ReadLine();
             if (int.TryParse(choice, out int num) && num > 0 && num <= army.Units.Count)
             {
-                var selected = army.Units[num - 1];
+                Unit selected = army.Units[num - 1];
                 if (selected.health > 0)
                 {
                     return selected;
                 }
-                Console.WriteLine("Cannot choose a dead unit.");
+                Color.ColorWriteLine("Cannot choose a dead unit.", Color.errorColor);
             }
             else
             {
-                Console.WriteLine("Invalid unit number. Try again.");
+                Color.ColorWriteLine("Invalid unit number. Try again.", Color.errorColor);
             }
         }
     }
@@ -75,7 +75,7 @@ class Program
         }
         while (true)
         {
-            var selected = army.Units[random.Next(army.Units.Count)];
+            Unit selected = army.Units[random.Next(army.Units.Count)];
             if (selected.health > 0)
             {
                 return selected;
@@ -87,6 +87,7 @@ class Program
         if (attacker.health > 0)
         {
             defender.health -= attacker.damage;
+            defender.health = Math.Max(0, defender.health);
             Color.PrintAttack(attacker, defender);
             if (defender.health <= 0)
             {

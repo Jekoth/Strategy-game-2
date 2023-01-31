@@ -11,6 +11,12 @@ namespace Strategy_game_2
         public static ConsoleColor errorColor = ConsoleColor.Red;
         public static ConsoleColor noteColor = ConsoleColor.Yellow;
 
+        public static void ColorWrite(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+        }
+
         public static void ColorWriteLine(string message, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -20,7 +26,7 @@ namespace Strategy_game_2
 
         public static void DisplayArmy(string title, Army army)
         {
-            Console.WriteLine(title);
+            ColorWriteLine(title, noteColor);
             Console.WriteLine("-------------------------------------");
             for (int i = 0; i < army.Units.Count; i++)
             {
